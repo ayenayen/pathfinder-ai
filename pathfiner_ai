@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pathfinder AI — Navigasi Karir Berbasis AI</title>
+<meta name="description" content="Pathfinder AI mendiagnosis gap CV kamu dan kasih roadmap karir spesifik dalam 60 detik. Gratis untuk 200 early user pertama.">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--navy:#1A2B5F;--navy-dark:#0F1A3D;--navy-light:#2A3F7F;--blue:#4A90E2;--white:#FFFFFF;--gray:#F4F6FA;--text-muted:#8A9BB8;}
+body{font-family:'Outfit',sans-serif;background:var(--white);color:var(--navy);overflow-x:hidden;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 40px;display:flex;justify-content:space-between;align-items:center;background:rgba(26,43,95,0.95);backdrop-filter:blur(12px);}
+.nav-logo{color:#fff;font-weight:800;font-size:1.2rem;letter-spacing:-0.5px;}
+.nav-logo span{color:var(--blue);}
+.nav-cta{background:var(--blue);color:#fff;border:none;padding:10px 22px;border-radius:8px;font-family:'Outfit',sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;transition:all 0.2s;}
+.nav-cta:hover{background:#3a7bd5;transform:translateY(-1px);}
+
+/* HERO */
+.hero{min-height:100vh;background:linear-gradient(135deg,var(--navy-dark) 0%,var(--navy) 50%,var(--navy-light) 100%);display:flex;align-items:center;justify-content:center;text-align:center;padding:100px 20px 60px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 60% 40%,rgba(74,144,226,0.15) 0%,transparent 60%);pointer-events:none;}
+.hero-badge{display:inline-block;background:rgba(74,144,226,0.2);border:1px solid rgba(74,144,226,0.4);color:var(--blue);padding:6px 16px;border-radius:20px;font-size:0.85rem;font-weight:600;margin-bottom:24px;letter-spacing:0.5px;}
+.hero h1{font-size:clamp(2rem,5vw,3.8rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:20px;letter-spacing:-1px;}
+.hero h1 span{background:linear-gradient(135deg,var(--blue),#7BB3F0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-sub{font-size:clamp(1rem,2vw,1.25rem);color:rgba(255,255,255,0.75);max-width:580px;margin:0 auto 40px;line-height:1.6;}
+.hero-sub strong{color:#fff;}
+.hero-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+.btn-primary{background:linear-gradient(135deg,var(--blue),#3a7bd5);color:#fff;border:none;padding:16px 36px;border-radius:12px;font-family:'Outfit',sans-serif;font-weight:700;font-size:1rem;cursor:pointer;transition:all 0.3s;text-decoration:none;display:inline-block;}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(74,144,226,0.4);}
+.btn-secondary{background:transparent;color:#fff;border:2px solid rgba(255,255,255,0.3);padding:16px 36px;border-radius:12px;font-family:'Outfit',sans-serif;font-weight:700;font-size:1rem;cursor:pointer;transition:all 0.3s;text-decoration:none;display:inline-block;}
+.btn-secondary:hover{border-color:#fff;background:rgba(255,255,255,0.1);}
+.hero-stats{display:flex;gap:40px;justify-content:center;margin-top:60px;flex-wrap:wrap;}
+.stat{text-align:center;}
+.stat-num{font-size:2rem;font-weight:900;color:#fff;}
+.stat-label{font-size:0.8rem;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px;}
+
+/* BENEFITS */
+.benefits{padding:100px 20px;background:var(--gray);}
+.section-label{text-align:center;color:var(--blue);font-weight:700;font-size:0.85rem;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;}
+.section-title{text-align:center;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;color:var(--navy);margin-bottom:16px;letter-spacing:-0.5px;}
+.section-sub{text-align:center;color:var(--text-muted);font-size:1rem;max-width:500px;margin:0 auto 60px;}
+.benefits-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;max-width:900px;margin:0 auto;}
+.benefit-card{background:#fff;border-radius:20px;padding:36px 32px;box-shadow:0 4px 24px rgba(26,43,95,0.08);border:1px solid rgba(26,43,95,0.06);transition:all 0.3s;position:relative;overflow:hidden;}
+.benefit-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),#7BB3F0);}
+.benefit-card:hover{transform:translateY(-6px);box-shadow:0 16px 48px rgba(26,43,95,0.14);}
+.benefit-icon{font-size:2.5rem;margin-bottom:20px;display:block;}
+.benefit-card h3{font-size:1.15rem;font-weight:800;color:var(--navy);margin-bottom:10px;}
+.benefit-card p{color:var(--text-muted);font-size:0.95rem;line-height:1.6;}
+
+/* SOCIAL PROOF */
+.social-proof{padding:100px 20px;background:var(--navy);text-align:center;}
+.social-proof h2{font-size:clamp(2rem,4vw,3rem);font-weight:900;color:#fff;margin-bottom:16px;}
+.social-proof h2 span{color:var(--blue);}
+.social-proof p{color:rgba(255,255,255,0.6);font-size:1rem;margin-bottom:60px;}
+.counter-wrap{display:flex;gap:60px;justify-content:center;flex-wrap:wrap;margin-bottom:60px;}
+.counter-item{text-align:center;}
+.counter-num{font-size:3.5rem;font-weight:900;color:#fff;line-height:1;}
+.counter-num span{color:var(--blue);}
+.counter-label{color:rgba(255,255,255,0.5);font-size:0.85rem;margin-top:8px;text-transform:uppercase;letter-spacing:1px;}
+.avatars{display:flex;justify-content:center;margin-bottom:16px;}
+.avatar{width:48px;height:48px;border-radius:50%;border:3px solid var(--navy);background:linear-gradient(135deg,var(--blue),#7BB3F0);margin-left:-12px;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:0.85rem;}
+.avatar:first-child{margin-left:0;}
+.proof-text{color:rgba(255,255,255,0.7);font-size:0.95rem;}
+
+/* FORM */
+.waitlist{padding:100px 20px;background:#fff;}
+.form-wrap{max-width:560px;margin:0 auto;background:linear-gradient(135deg,var(--navy),var(--navy-light));border-radius:24px;padding:48px 40px;box-shadow:0 24px 80px rgba(26,43,95,0.2);}
+.form-wrap .section-label{color:var(--blue);}
+.form-wrap .section-title{color:#fff;margin-bottom:8px;}
+.form-wrap .section-sub{color:rgba(255,255,255,0.6);margin-bottom:32px;}
+.form-group{margin-bottom:16px;}
+.form-group input,.form-group select{width:100%;padding:14px 18px;border-radius:10px;border:1.5px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.08);color:#fff;font-family:'Outfit',sans-serif;font-size:1rem;transition:border 0.2s;outline:none;}
+.form-group input::placeholder{color:rgba(255,255,255,0.4);}
+.form-group select{color:rgba(255,255,255,0.7);}
+.form-group select option{color:var(--navy);background:#fff;}
+.form-group input:focus,.form-group select:focus{border-color:var(--blue);background:rgba(74,144,226,0.1);}
+.btn-submit{width:100%;padding:16px;background:linear-gradient(135deg,var(--blue),#3a7bd5);color:#fff;border:none;border-radius:12px;font-family:'Outfit',sans-serif;font-weight:800;font-size:1.05rem;cursor:pointer;transition:all 0.3s;margin-top:8px;}
+.btn-submit:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(74,144,226,0.4);}
+.form-note{text-align:center;color:rgba(255,255,255,0.4);font-size:0.8rem;margin-top:16px;}
+.success-msg{display:none;text-align:center;padding:20px;background:rgba(74,144,226,0.15);border-radius:12px;color:#fff;font-weight:600;}
+
+/* FOOTER */
+footer{background:var(--navy-dark);padding:48px 20px;text-align:center;}
+.footer-logo{color:#fff;font-weight:800;font-size:1.3rem;margin-bottom:8px;}
+.footer-logo span{color:var(--blue);}
+.footer-tagline{color:rgba(255,255,255,0.4);font-size:0.9rem;margin-bottom:32px;}
+.footer-links{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin-bottom:32px;}
+.footer-links a{color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.9rem;transition:color 0.2s;}
+.footer-links a:hover{color:#fff;}
+.footer-demo{display:inline-flex;align-items:center;gap:8px;background:rgba(74,144,226,0.15);border:1px solid rgba(74,144,226,0.3);color:var(--blue);padding:12px 24px;border-radius:10px;text-decoration:none;font-weight:700;transition:all 0.2s;margin-bottom:32px;}
+.footer-demo:hover{background:rgba(74,144,226,0.25);}
+.footer-bottom{color:rgba(255,255,255,0.25);font-size:0.8rem;}
+
+/* FLOATING CTA */
+.floating-cta{position:fixed;bottom:24px;right:24px;z-index:99;background:linear-gradient(135deg,var(--blue),#3a7bd5);color:#fff;padding:14px 24px;border-radius:50px;font-family:'Outfit',sans-serif;font-weight:700;font-size:0.9rem;text-decoration:none;box-shadow:0 8px 32px rgba(74,144,226,0.4);transition:all 0.3s;display:flex;align-items:center;gap:8px;}
+.floating-cta:hover{transform:translateY(-3px);box-shadow:0 16px 48px rgba(74,144,226,0.5);}
+.pulse{width:8px;height:8px;background:#fff;border-radius:50%;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.5;transform:scale(1.5);}}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+nav{padding:16px 20px;}
+.hero-stats{gap:24px;}
+.form-wrap{padding:32px 24px;}
+.counter-wrap{gap:32px;}
+}
+
+/* ANIMATIONS */
+.fade-in{opacity:0;transform:translateY(30px);transition:all 0.7s ease;}
+.fade-in.visible{opacity:1;transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Pathfinder<span>AI</span></div>
+  <button class="nav-cta" onclick="document.getElementById('waitlist-form').scrollIntoView({behavior:'smooth'})">Daftar Early Access</button>
+</nav>
+
+<!-- FLOATING CTA -->
+<a href="#waitlist-form" class="floating-cta" id="floating-btn" onclick="event.preventDefault();document.getElementById('waitlist-form').scrollIntoView({behavior:'smooth'});">
+  <span class="pulse"></span>
+  Daftar Sekarang
+</a>
+
+<!-- HERO -->
+<section class="hero">
+  <div style="position:relative;z-index:1;">
+    <div class="hero-badge">🎯 Terbuka untuk 200 Early User Pertama</div>
+    <h1>Udah tau sekarang<br>punya <span>apa di diri lo?</span></h1>
+    <p class="hero-sub">
+      Pathfinder AI mendiagnosis <strong>gap CV kamu</strong> dan kasih <strong>roadmap karir spesifik</strong> dalam 60 detik.<br>
+      Gratis untuk 200 early user pertama.
+    </p>
+    <div class="hero-btns">
+      <button class="btn-primary" id="hero-cta-btn" onclick="document.getElementById('waitlist-form').scrollIntoView({behavior:'smooth'})">Daftar Early Access Gratis →</button>
+      <a class="btn-secondary" id="hero-demo-btn" href="https://www.figma.com/proto/NnFe4QuoghZ9VRxcwjQdda/PathFinderAI?node-id=2-2&t=gjuKMG7yKhI76pDA-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=2%3A2&utm_source=landingpage&utm_medium=button&utm_campaign=earlyaccess" target="_blank" rel="noopener">Coba Demo →</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num" id="stat1">100<span style="color:var(--blue)">+</span></div>
+        <div class="stat-label">Mahasiswa Join</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">60<span style="color:var(--blue)">s</span></div>
+        <div class="stat-label">Analisis CV</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">0<span style="color:var(--blue)">/</span>100</div>
+        <div class="stat-label">Gap Score</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<section class="benefits">
+  <div class="section-label">Fitur Utama</div>
+  <h2 class="section-title">Kenapa Pathfinder AI?</h2>
+  <p class="section-sub">Tiga hal yang bikin kamu satu langkah lebih maju dari kandidat lain.</p>
+  <div class="benefits-grid fade-in" id="benefits-section">
+    <div class="benefit-card">
+      <span class="benefit-icon">📊</span>
+      <h3>Gap Score 0–100</h3>
+      <p>Berbasis data industri aktual. Tahu persis skill mana yang bikin CV kamu ditolak HRD — bukan tebak-tebakan.</p>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-icon">🗺️</span>
+      <h3>Roadmap Belajar Personal</h3>
+      <p>Disesuaikan per jurusan dan target karir. Bukan roadmap generik — ini spesifik buat kamu.</p>
+    </div>
+    <div class="benefit-card">
+      <span class="benefit-icon">🏆</span>
+      <h3>Proof of Work Credential</h3>
+      <p>Bukti portofolio yang diakui HRD. Bukan sekadar sertifikat kursus online biasa.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL PROOF -->
+<section class="social-proof fade-in" id="social-section">
+  <h2>Sudah <span id="counter-main">100</span>+ Mahasiswa<br>yang Join Waitlist</h2>
+  <p>Dari berbagai universitas dan jurusan di seluruh Indonesia</p>
+  <div class="counter-wrap">
+    <div class="counter-item">
+      <div class="counter-num"><span id="c1">100</span>+</div>
+      <div class="counter-label">Waitlist Users</div>
+    </div>
+    <div class="counter-item">
+      <div class="counter-num"><span id="c2">20</span>+</div>
+      <div class="counter-label">Universitas</div>
+    </div>
+    <div class="counter-item">
+      <div class="counter-num"><span id="c3">15</span>+</div>
+      <div class="counter-label">Jurusan</div>
+    </div>
+  </div>
+  <div class="avatars">
+    <div class="avatar">AR</div>
+    <div class="avatar">DP</div>
+    <div class="avatar">MF</div>
+    <div class="avatar">SR</div>
+    <div class="avatar">+96</div>
+  </div>
+  <p class="proof-text">Bergabung bersama ratusan mahasiswa yang sudah siap navigasi karir mereka 🚀</p>
+</section>
+
+<!-- FORM -->
+<section class="waitlist" id="waitlist-form">
+  <div class="form-wrap fade-in" id="form-section">
+    <div class="section-label">Early Access</div>
+    <h2 class="section-title" style="font-size:1.8rem;">Daftar Sekarang</h2>
+    <p class="section-sub">Gratis selamanya untuk 200 user pertama. Slot terbatas.</p>
+    <div class="success-msg" id="success-msg">
+      🎉 Kamu berhasil daftar! Cek email untuk konfirmasi.<br>Sementara, coba demo prototype-nya dulu yuk →
+      <br><br>
+      <a href="https://www.figma.com/proto/NnFe4QuoghZ9VRxcwjQdda/PathFinderAI?node-id=2-2&t=gjuKMG7yKhI76pDA-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=2%3A2&utm_source=landingpage&utm_medium=form_success&utm_campaign=earlyaccess" target="_blank" style="color:var(--blue);">Coba Prototype Figma →</a>
+    </div>
+    <form id="signup-form" onsubmit="handleSubmit(event)">
+      <div class="form-group">
+        <input type="text" id="field-nama" name="nama" placeholder="Nama Lengkap" required>
+      </div>
+      <div class="form-group">
+        <input type="email" id="field-email" name="email" placeholder="Email Aktif" required>
+      </div>
+      <div class="form-group">
+        <input type="text" id="field-jurusan" name="jurusan" placeholder="Jurusan / Bidang Studi" required>
+      </div>
+      <div class="form-group">
+        <select id="field-masalah" name="masalah" required>
+          <option value="" disabled selected>Apa masalah terbesar kamu saat cari kerja?</option>
+          <option value="tidak_tahu_skill">Tidak tahu skill yang kurang</option>
+          <option value="bingung_mulai">Bingung mulai belajar dari mana</option>
+          <option value="cv_ditolak">CV selalu ditolak</option>
+          <option value="tidak_tahu_karir">Tidak tahu karir cocok untuk saya</option>
+        </select>
+      </div>
+      <button type="submit" class="btn-submit" id="submit-btn">Daftar Early Access Gratis 🚀</button>
+      <p class="form-note">🔒 No spam. Unsubscribe kapan saja. Data kamu aman.</p>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Pathfinder<span>AI</span></div>
+  <p class="footer-tagline">Navigasi karir berbasis AI untuk mahasiswa Indonesia</p>
+  <div style="margin-bottom:32px;">
+    <a href="https://www.figma.com/proto/NnFe4QuoghZ9VRxcwjQdda/PathFinderAI?node-id=2-2&t=gjuKMG7yKhI76pDA-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=2%3A2&utm_source=landingpage&utm_medium=footer&utm_campaign=earlyaccess" 
+       target="_blank" class="footer-demo" id="footer-demo-btn">
+      🎨 Lihat Prototype Figma &nbsp;→&nbsp; Try Demo
+    </a>
+  </div>
+  <div class="footer-links">
+    <a href="#waitlist-form">Daftar Early Access</a>
+    <a href="#benefits-section">Fitur</a>
+    <a href="mailto:pathfinderai@gmail.com">Kontak</a>
+  </div>
+  <p class="footer-bottom">© 2025 Pathfinder AI · Dibuat untuk GEMASTIK</p>
+</footer>
+
+<script>
+// Google Apps Script Web App URL — GANTI dengan URL kamu setelah deploy
+const APPS_SCRIPT_URL = 'PASTE_YOUR_APPS_SCRIPT_URL_HERE';
+
+// PostHog — GANTI dengan snippet kamu
+// !function(t,e){...}  // paste posthog snippet here
+
+function handleSubmit(e){
+  e.preventDefault();
+  const btn = document.getElementById('submit-btn');
+  btn.textContent = 'Mendaftar...';
+  btn.disabled = true;
+
+  const data = {
+    nama: document.getElementById('field-nama').value,
+    email: document.getElementById('field-email').value,
+    jurusan: document.getElementById('field-jurusan').value,
+    masalah: document.getElementById('field-masalah').value,
+    timestamp: new Date().toISOString()
+  };
+
+  // Track event jika PostHog sudah disetup
+  if(typeof posthog !== 'undefined'){
+    posthog.capture('waitlist_signup', data);
+  }
+
+  if(APPS_SCRIPT_URL === 'PASTE_YOUR_APPS_SCRIPT_URL_HERE'){
+    // Demo mode — tampilkan success tanpa kirim data
+    showSuccess();
+    return;
+  }
+
+  fetch(APPS_SCRIPT_URL, {
+    method:'POST',
+    mode:'no-cors',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(data)
+  }).then(()=>showSuccess()).catch(()=>showSuccess());
+}
+
+function showSuccess(){
+  document.getElementById('signup-form').style.display = 'none';
+  document.getElementById('success-msg').style.display = 'block';
+}
+
+// Track CTA clicks
+document.getElementById('hero-cta-btn').addEventListener('click',function(){
+  if(typeof posthog!=='undefined') posthog.capture('cta_click',{location:'hero'});
+});
+document.getElementById('hero-demo-btn').addEventListener('click',function(){
+  if(typeof posthog!=='undefined') posthog.capture('demo_click',{location:'hero'});
+});
+document.getElementById('footer-demo-btn').addEventListener('click',function(){
+  if(typeof posthog!=='undefined') posthog.capture('demo_click',{location:'footer'});
+});
+
+// Intersection Observer for fade-in
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(el=>{
+    if(el.isIntersecting) el.target.classList.add('visible');
+  });
+},{threshold:0.15});
+document.querySelectorAll('.fade-in').forEach(el=>observer.observe(el));
+
+// Counter animation
+function animateCounter(el, target, duration=1500){
+  let start=0, step=target/60;
+  const timer=setInterval(()=>{
+    start+=step;
+    if(start>=target){start=target;clearInterval(timer);}
+    el.textContent=Math.floor(start);
+  }, duration/60);
+}
+const counterObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(el=>{
+    if(el.isIntersecting){
+      animateCounter(document.getElementById('c1'),100);
+      animateCounter(document.getElementById('c2'),20);
+      animateCounter(document.getElementById('c3'),15);
+      counterObserver.disconnect();
+    }
+  });
+},{threshold:0.3});
+counterObserver.observe(document.getElementById('social-section'));
+
+// Hide floating CTA when form visible
+const formObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    document.getElementById('floating-btn').style.display = e.isIntersecting ? 'none' : 'flex';
+  });
+},{threshold:0.2});
+formObserver.observe(document.getElementById('waitlist-form'));
+</script>
+</body>
+</html>
